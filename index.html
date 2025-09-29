@@ -4,25 +4,166 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>포켓몬 도감</title>
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="포켓몬 도감" />
     <meta property="og:description" content="간단한 포켓몬 도감" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" />
-    
-    
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="포켓몬 도감" />
+    <meta name="twitter:description" content="간단한 포켓몬 도감" />
+    <meta
+      name="twitter:image"
+      content="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+    />
+
     <!-- 일반 메타 태그 -->
     <meta name="description" content="간단한 포켓몬 도감" />
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" />
-    
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+    />
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
         font-family: Arial, sans-serif;
         max-width: 1000px;
-        margin: 50px auto;
+        margin: 0 auto;
         padding: 20px;
-        background-color: #f8f9fa;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+      .pokedex-container {
+        background: #dc0a2d;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        border: 8px solid #333;
+      }
+      .pokedex-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 3px solid #a00a1a;
+      }
+      .pokedex-lights {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .big-light {
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 30% 30%, #4dd9ff, #0088cc);
+        border-radius: 50%;
+        border: 4px solid #fff;
+        box-shadow: 0 0 20px rgba(77, 217, 255, 0.6),
+          inset -5px -5px 10px rgba(0, 0, 0, 0.3);
+      }
+      .small-lights {
+        display: flex;
+        gap: 8px;
+      }
+      .small-light {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+      }
+      .small-light.red {
+        background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+      }
+      .small-light.yellow {
+        background: radial-gradient(circle at 30% 30%, #ffd43b, #fab005);
+      }
+      .small-light.green {
+        background: radial-gradient(circle at 30% 30%, #51cf66, #2f9e44);
+      }
+      .pokedex-title {
+        flex: 1;
+        text-align: center;
+      }
+      .pokedex-title h1 {
+        color: #fff;
+        font-size: 32px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        font-weight: bold;
+      }
+      .search-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .search-container {
+        display: flex;
+        gap: 10px;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      #pokeId {
+        flex: 1;
+        padding: 15px;
+        font-size: 18px;
+        border: 3px solid #333;
+        border-radius: 10px;
+        outline: none;
+        background: #fff;
+      }
+      #pokeBtn {
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        background: linear-gradient(180deg, #ffd43b 0%, #fab005 100%);
+        border: 3px solid #333;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #333;
+        transition: transform 0.1s;
+        box-shadow: 0 4px 0 #c97a05;
+      }
+      #pokeBtn:hover {
+        background: linear-gradient(180deg, #ffe066 0%, #fcc419 100%);
+      }
+      #pokeBtn:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #c97a05;
+      }
+      .initial-message {
+        text-align: center;
+        color: #666;
+        padding: 40px 20px;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .initial-message h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #333;
+      }
+      .initial-message p {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .pokeball-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
       }
       .type-badge {
         display: inline-block;
@@ -35,27 +176,32 @@
         font-size: 12px;
       }
       .description {
-        background-color: #fff;
+        background-color: #f8f9fa;
         padding: 15px;
         border-radius: 10px;
-        margin: 15px 0;
+        margin: 15px 20px;
         line-height: 1.6;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
       #pokeBox {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      #pokeBox > div:not(.initial-message) {
         text-align: center;
-        margin-top: 30px;
+        padding: 30px;
       }
       img {
         width: 200px;
         height: 200px;
       }
       .info-section {
-        margin: 20px 0;
+        margin: 20px;
         padding: 15px;
-        background-color: #fff;
+        background-color: #f8f9fa;
         border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         text-align: left;
       }
       .info-section h3 {
@@ -120,7 +266,8 @@
         background-color: #007bff;
         color: white;
       }
-      .moves-table th, .moves-table td {
+      .moves-table th,
+      .moves-table td {
         padding: 10px;
         text-align: left;
         border-bottom: 1px solid #ddd;
@@ -130,7 +277,8 @@
         max-height: 350px;
         overflow-y: auto;
       }
-      .moves-table thead, .moves-table tbody tr {
+      .moves-table thead,
+      .moves-table tbody tr {
         display: table;
         width: 100%;
         table-layout: fixed;
@@ -159,94 +307,132 @@
     </style>
   </head>
   <body>
-    <section>
-      포켓몬 ID : <input id="pokeId" type="number" min="1" />
-      <button id="pokeBtn">검색</button>
-    </section>
-    <section id="pokeBox"></section>
+    <div class="pokedex-container">
+      <div class="pokedex-header">
+        <div class="pokedex-lights">
+          <div class="big-light"></div>
+          <div class="small-lights">
+            <div class="small-light red"></div>
+            <div class="small-light yellow"></div>
+            <div class="small-light green"></div>
+          </div>
+        </div>
+        <div class="pokedex-title">
+          <h1>포켓몬 도감</h1>
+        </div>
+      </div>
+
+      <div class="search-section">
+        <div class="search-container">
+          <input
+            id="pokeId"
+            type="number"
+            min="1"
+            placeholder="포켓몬 번호 입력 (1-1025)"
+          />
+          <button id="pokeBtn">검색</button>
+        </div>
+      </div>
+
+      <section id="pokeBox">
+        <div class="initial-message">
+          <img
+            class="pokeball-icon"
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+            alt="몬스터볼"
+          />
+          <h2>환영합니다!</h2>
+          <p>포켓몬 번호를 입력하고 검색 버튼을 눌러보세요.</p>
+          <p>1번부터 1025번까지의 포켓몬을 찾을 수 있습니다.</p>
+        </div>
+      </section>
+    </div>
     <script>
       // 타입 색상 매핑
       const typeColors = {
-        normal: '#A8A878',
-        fire: '#F08030',
-        water: '#6890F0',
-        electric: '#F8D030',
-        grass: '#78C850',
-        ice: '#98D8D8',
-        fighting: '#C03028',
-        poison: '#A040A0',
-        ground: '#E0C068',
-        flying: '#A890F0',
-        psychic: '#F85888',
-        bug: '#A8B820',
-        rock: '#B8A038',
-        ghost: '#705898',
-        dragon: '#7038F8',
-        dark: '#705848',
-        steel: '#B8B8D0',
-        fairy: '#EE99AC'
+        normal: "#A8A878",
+        fire: "#F08030",
+        water: "#6890F0",
+        electric: "#F8D030",
+        grass: "#78C850",
+        ice: "#98D8D8",
+        fighting: "#C03028",
+        poison: "#A040A0",
+        ground: "#E0C068",
+        flying: "#A890F0",
+        psychic: "#F85888",
+        bug: "#A8B820",
+        rock: "#B8A038",
+        ghost: "#705898",
+        dragon: "#7038F8",
+        dark: "#705848",
+        steel: "#B8B8D0",
+        fairy: "#EE99AC",
       };
 
       // 타입 한글 번역
       const typeKorean = {
-        normal: '노말',
-        fire: '불꽃',
-        water: '물',
-        electric: '전기',
-        grass: '풀',
-        ice: '얼음',
-        fighting: '격투',
-        poison: '독',
-        ground: '땅',
-        flying: '비행',
-        psychic: '에스퍼',
-        bug: '벌레',
-        rock: '바위',
-        ghost: '고스트',
-        dragon: '드래곤',
-        dark: '악',
-        steel: '강철',
-        fairy: '페어리'
+        normal: "노말",
+        fire: "불꽃",
+        water: "물",
+        electric: "전기",
+        grass: "풀",
+        ice: "얼음",
+        fighting: "격투",
+        poison: "독",
+        ground: "땅",
+        flying: "비행",
+        psychic: "에스퍼",
+        bug: "벌레",
+        rock: "바위",
+        ghost: "고스트",
+        dragon: "드래곤",
+        dark: "악",
+        steel: "강철",
+        fairy: "페어리",
       };
 
       // 타입 상성 정보 가져오기
       async function getTypeEffectiveness(types) {
         const typeData = await Promise.all(
-          types.map(type => 
-            fetch(`https://pokeapi.co/api/v2/type/${type}`).then(r => r.json())
+          types.map((type) =>
+            fetch(`https://pokeapi.co/api/v2/type/${type}`).then((r) =>
+              r.json()
+            )
           )
         );
 
         // 모든 타입 목록
         const allTypes = Object.keys(typeColors);
-        
+
         // 방어 시 상성 계산
         const defenseMultipliers = {};
-        
+
         // 모든 타입을 1배로 초기화
-        allTypes.forEach(type => {
+        allTypes.forEach((type) => {
           defenseMultipliers[type] = 1;
         });
-        
+
         // 각 타입의 상성 정보 반영
         types.forEach((type, index) => {
           const data = typeData[index];
-          
-          data.damage_relations.double_damage_from.forEach(t => {
+
+          data.damage_relations.double_damage_from.forEach((t) => {
             defenseMultipliers[t.name] = (defenseMultipliers[t.name] || 1) * 2;
           });
-          
-          data.damage_relations.half_damage_from.forEach(t => {
-            defenseMultipliers[t.name] = (defenseMultipliers[t.name] || 1) * 0.5;
+
+          data.damage_relations.half_damage_from.forEach((t) => {
+            defenseMultipliers[t.name] =
+              (defenseMultipliers[t.name] || 1) * 0.5;
           });
-          
-          data.damage_relations.no_damage_from.forEach(t => {
+
+          data.damage_relations.no_damage_from.forEach((t) => {
             defenseMultipliers[t.name] = 0;
           });
         });
 
         return {
-          defenseMultipliers
+          defenseMultipliers,
         };
       }
 
@@ -254,8 +440,12 @@
       async function getAbilityInfo(abilityUrl) {
         const response = await fetch(abilityUrl);
         const data = await response.json();
-        const koName = data.names.find(n => n.language.name === 'ko')?.name || data.name;
-        const koEffect = data.flavor_text_entries.find(e => e.language.name === 'ko')?.flavor_text.replace(/\n/g, ' ') || '';
+        const koName =
+          data.names.find((n) => n.language.name === "ko")?.name || data.name;
+        const koEffect =
+          data.flavor_text_entries
+            .find((e) => e.language.name === "ko")
+            ?.flavor_text.replace(/\n/g, " ") || "";
         return { koName, koEffect };
       }
 
@@ -263,23 +453,30 @@
       async function getEvolutionChain(evolutionChainUrl) {
         const response = await fetch(evolutionChainUrl);
         const data = await response.json();
-        
+
         const chain = [];
         let current = data.chain;
-        
+
         while (current) {
-          const speciesId = current.species.url.split('/').filter(Boolean).pop();
+          const speciesId = current.species.url
+            .split("/")
+            .filter(Boolean)
+            .pop();
           const evolutionDetails = current.evolution_details[0];
-          
+
           // 포켓몬 상세 정보 가져오기 (이미지용)
-          const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+          const pokemonResponse = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${speciesId}`
+          );
           const pokemonData = await pokemonResponse.json();
-          
+
           // 종 정보 가져오기 (한글 이름용)
           const speciesResponse = await fetch(current.species.url);
           const speciesData = await speciesResponse.json();
-          const koName = speciesData.names.find(n => n.language.name === 'ko')?.name || current.species.name;
-          
+          const koName =
+            speciesData.names.find((n) => n.language.name === "ko")?.name ||
+            current.species.name;
+
           chain.push({
             name: current.species.name,
             koName: koName,
@@ -292,10 +489,10 @@
             timeOfDay: evolutionDetails?.time_of_day || null,
             location: evolutionDetails?.location?.name || null,
           });
-          
+
           current = current.evolves_to[0];
         }
-        
+
         return chain;
       }
 
@@ -303,43 +500,53 @@
       async function getMoveNameKo(moveUrl) {
         const response = await fetch(moveUrl);
         const data = await response.json();
-        return data.names.find(n => n.language.name === 'ko')?.name || data.name;
+        return (
+          data.names.find((n) => n.language.name === "ko")?.name || data.name
+        );
       }
 
       // 기술명 한글로 가져오기
       async function getMoveNameKo(moveUrl) {
         const response = await fetch(moveUrl);
         const data = await response.json();
-        return data.names.find(n => n.language.name === 'ko')?.name || data.name;
+        return (
+          data.names.find((n) => n.language.name === "ko")?.name || data.name
+        );
       }
 
       // 1. API에서 데이터 호출하기
       async function getPokemon(id) {
         const pokeBox = document.querySelector("#pokeBox");
         pokeBox.innerHTML = '<div class="loading">로딩 중...</div>';
-        
+
         try {
           console.log(`${id}번 포켓몬을 불러옵니다`);
-          
+
           // 기본 정보 가져오기
-          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+          const response = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${id}`
+          );
           const data = await response.json();
-          
+
           // 종 정보 가져오기
-          const response2 = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+          const response2 = await fetch(
+            `https://pokeapi.co/api/v2/pokemon-species/${id}`
+          );
           const data2 = await response2.json();
-          
+
           // 한글 이름
-          const koName = data2.names.find(v => v.language.name === "ko")?.name || data.name;
-          
+          const koName =
+            data2.names.find((v) => v.language.name === "ko")?.name ||
+            data.name;
+
           // 한글 설명
           const koDescription = data2.flavor_text_entries
-            .filter(v => v.language.name === "ko")
-            .map(v => v.flavor_text.replace(/\n/g, ' ').replace(/\f/g, ' '))
+            .filter((v) => v.language.name === "ko")
+            .map((v) => v.flavor_text.replace(/\n/g, " ").replace(/\f/g, " "))
             .pop();
-          
+
           // 타입 정보 추출
-          const types = data.types.map(t => t.type.name);
+          const types = data.types.map((t) => t.type.name);
 
           // 타입 상성 정보
           const effectiveness = await getTypeEffectiveness(types);
@@ -350,13 +557,15 @@
               const info = await getAbilityInfo(a.ability.url);
               return {
                 ...info,
-                isHidden: a.is_hidden
+                isHidden: a.is_hidden,
               };
             })
           );
 
           // 진화 체인 정보
-          const evolutionChain = await getEvolutionChain(data2.evolution_chain.url);
+          const evolutionChain = await getEvolutionChain(
+            data2.evolution_chain.url
+          );
 
           const poke = {
             engName: data.name,
@@ -367,12 +576,13 @@
             description: koDescription,
             effectiveness,
             abilities,
-            evolutionChain
+            evolutionChain,
           };
-          
+
           renderPoke(poke);
         } catch (error) {
-          pokeBox.innerHTML = '<div class="loading">데이터를 불러오는데 실패했습니다.</div>';
+          pokeBox.innerHTML =
+            '<div class="loading">데이터를 불러오는데 실패했습니다.</div>';
           console.error(error);
         }
       }
@@ -384,31 +594,42 @@
 
       // 타입 배지 생성 함수
       function createTypeBadge(type) {
-        const color = typeColors[type] || '#777';
+        const color = typeColors[type] || "#777";
         const koreanType = typeKorean[type] || type;
         return `<span class="type-badge" style="background-color: ${color}">${koreanType}</span>`;
       }
 
       // 진화 조건 텍스트 생성
       function getEvolutionConditionText(evo) {
-        if (!evo.trigger) return '';
-        
+        if (!evo.trigger) return "";
+
         let conditions = [];
         if (evo.minLevel) conditions.push(`레벨 ${evo.minLevel}`);
         if (evo.item) conditions.push(`${evo.item} 사용`);
         if (evo.minHappiness) conditions.push(`친밀도 ${evo.minHappiness}`);
-        if (evo.timeOfDay) conditions.push(`${evo.timeOfDay === 'day' ? '낮' : '밤'}`);
+        if (evo.timeOfDay)
+          conditions.push(`${evo.timeOfDay === "day" ? "낮" : "밤"}`);
         if (evo.location) conditions.push(`${evo.location}에서`);
-        
-        return conditions.length > 0 ? conditions.join(', ') : evo.trigger;
+
+        return conditions.length > 0 ? conditions.join(", ") : evo.trigger;
       }
 
       // 3. 데이터 화면에 그리기
-      function renderPoke({ engName, koName, shape, sound, types, description, effectiveness, abilities, evolutionChain }) {
+      function renderPoke({
+        engName,
+        koName,
+        shape,
+        sound,
+        types,
+        description,
+        effectiveness,
+        abilities,
+        evolutionChain,
+      }) {
         const pokeBox = document.querySelector("#pokeBox");
-        
+
         // 타입 배지 HTML 생성
-        const typeBadges = types.map(createTypeBadge).join('');
+        const typeBadges = types.map(createTypeBadge).join("");
 
         // 방어 상성 타입 분류
         const superWeak = [];
@@ -418,52 +639,85 @@
         const superResistant = [];
         const immune = [];
 
-        Object.entries(effectiveness.defenseMultipliers).forEach(([type, multiplier]) => {
-          if (multiplier >= 4) superWeak.push(type);
-          else if (multiplier === 2) weak.push(type);
-          else if (multiplier === 1) normal.push(type);
-          else if (multiplier === 0.5) resistant.push(type);
-          else if (multiplier === 0.25) superResistant.push(type);
-          else if (multiplier === 0) immune.push(type);
-        });
+        Object.entries(effectiveness.defenseMultipliers).forEach(
+          ([type, multiplier]) => {
+            if (multiplier >= 4) superWeak.push(type);
+            else if (multiplier === 2) weak.push(type);
+            else if (multiplier === 1) normal.push(type);
+            else if (multiplier === 0.5) resistant.push(type);
+            else if (multiplier === 0.25) superResistant.push(type);
+            else if (multiplier === 0) immune.push(type);
+          }
+        );
 
-        const superWeakHTML = superWeak.length > 0
-          ? `<div style="margin-top: 10px;"><strong>치명적 약점 (4배):</strong><br>${superWeak.map(createTypeBadge).join('')}</div>`
-          : '';
+        const superWeakHTML =
+          superWeak.length > 0
+            ? `<div style="margin-top: 10px;"><strong>치명적 약점 (4배):</strong><br>${superWeak
+                .map(createTypeBadge)
+                .join("")}</div>`
+            : "";
 
-        const weakHTML = weak.length > 0
-          ? `<div style="margin-top: 10px;"><strong>약점 (2배):</strong><br>${weak.map(createTypeBadge).join('')}</div>`
-          : '';
+        const weakHTML =
+          weak.length > 0
+            ? `<div style="margin-top: 10px;"><strong>약점 (2배):</strong><br>${weak
+                .map(createTypeBadge)
+                .join("")}</div>`
+            : "";
 
-        const normalHTML = normal.length > 0
-          ? `<div style="margin-top: 10px;"><strong>보통 (1배):</strong><br>${normal.map(createTypeBadge).join('')}</div>`
-          : '';
+        const normalHTML =
+          normal.length > 0
+            ? `<div style="margin-top: 10px;"><strong>보통 (1배):</strong><br>${normal
+                .map(createTypeBadge)
+                .join("")}</div>`
+            : "";
 
-        const resistantHTML = resistant.length > 0
-          ? `<div style="margin-top: 10px;"><strong>저항 (0.5배):</strong><br>${resistant.map(createTypeBadge).join('')}</div>`
-          : '';
+        const resistantHTML =
+          resistant.length > 0
+            ? `<div style="margin-top: 10px;"><strong>저항 (0.5배):</strong><br>${resistant
+                .map(createTypeBadge)
+                .join("")}</div>`
+            : "";
 
-        const superResistantHTML = superResistant.length > 0
-          ? `<div style="margin-top: 10px;"><strong>강한 저항 (0.25배):</strong><br>${superResistant.map(createTypeBadge).join('')}</div>`
-          : '';
+        const superResistantHTML =
+          superResistant.length > 0
+            ? `<div style="margin-top: 10px;"><strong>강한 저항 (0.25배):</strong><br>${superResistant
+                .map(createTypeBadge)
+                .join("")}</div>`
+            : "";
 
-        const immuneHTML = immune.length > 0
-          ? `<div style="margin-top: 10px;"><strong>무효 (0배):</strong><br>${immune.map(createTypeBadge).join('')}</div>`
-          : '';
+        const immuneHTML =
+          immune.length > 0
+            ? `<div style="margin-top: 10px;"><strong>무효 (0배):</strong><br>${immune
+                .map(createTypeBadge)
+                .join("")}</div>`
+            : "";
 
         // 특성 HTML
-        const abilitiesHTML = abilities.map(a => `
-          <div class="ability-item ${a.isHidden ? 'hidden-ability' : ''}">
-            <div class="ability-name">${a.koName} ${a.isHidden ? '(숨겨진 특성)' : ''}</div>
+        const abilitiesHTML = abilities
+          .map(
+            (a) => `
+          <div class="ability-item ${a.isHidden ? "hidden-ability" : ""}">
+            <div class="ability-name">${a.koName} ${
+              a.isHidden ? "(숨겨진 특성)" : ""
+            }</div>
             <div>${a.koEffect}</div>
           </div>
-        `).join('');
+        `
+          )
+          .join("");
 
         // 진화 체인 HTML
-        const evolutionHTML = evolutionChain.map((evo, index) => {
-          const condition = index > 0 ? `<div class="evolution-condition">${getEvolutionConditionText(evo)}</div>` : '';
-          const arrow = index > 0 ? '<div class="evolution-arrow">→</div>' : '';
-          return `
+        const evolutionHTML = evolutionChain
+          .map((evo, index) => {
+            const condition =
+              index > 0
+                ? `<div class="evolution-condition">${getEvolutionConditionText(
+                    evo
+                  )}</div>`
+                : "";
+            const arrow =
+              index > 0 ? '<div class="evolution-arrow">→</div>' : "";
+            return `
             ${arrow}
             <div class="evolution-item">
               <img src="${evo.sprite}" alt="${evo.koName}">
@@ -471,35 +725,38 @@
               ${condition}
             </div>
           `;
-        }).join('');
-        
-        pokeBox.innerHTML = `
-            <h4>${koName}</h4>
-            <div>${typeBadges}</div>
-            <img src="${shape}">
-            <audio src="${sound}" controls></audio>
-            <div class="description">${description}</div>
-            
-            <div class="info-section">
-              <h3>🎯 특성</h3>
-              ${abilitiesHTML}
-            </div>
+          })
+          .join("");
 
-            <div class="info-section">
-              <h3>🔄 진화 단계</h3>
-              <div class="evolution-chain">
-                ${evolutionHTML}
-              </div>
-            </div>
+        pokeBox.innerHTML = `
+            <div style="text-align: center; padding: 30px;">
+              <h4>${koName}</h4>
+              <div>${typeBadges}</div>
+              <img src="${shape}">
+              <audio src="${sound}" controls></audio>
+              <div class="description">${description}</div>
             
-            <div class="info-section">
-              <h3>🛡️ 방어 시 상성</h3>
-              ${superWeakHTML}
-              ${weakHTML}
-              ${normalHTML}
-              ${resistantHTML}
-              ${superResistantHTML}
-              ${immuneHTML}
+              <div class="info-section">
+                <h3>🎯 특성</h3>
+                ${abilitiesHTML}
+              </div>
+
+              <div class="info-section">
+                <h3>🔄 진화 단계</h3>
+                <div class="evolution-chain">
+                  ${evolutionHTML}
+                </div>
+              </div>
+            
+              <div class="info-section">
+                <h3>🛡️ 방어 시 상성</h3>
+                ${superWeakHTML}
+                ${weakHTML}
+                ${normalHTML}
+                ${resistantHTML}
+                ${superResistantHTML}
+                ${immuneHTML}
+              </div>
             </div>
         `;
       }
